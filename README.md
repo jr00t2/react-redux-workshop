@@ -1,3 +1,9 @@
+# Boilerplate for an internal react-redux-es6 Workshop
+
+Fork of https://github.com/nicksp/redux-webpack-es6-boilerplate
+
+----------------------------------------------------------------------------------------
+
 # React + Redux w/ ES6 Starter Project
 
 **:tada: A Completely updated version of my initial boilerplate :rocket:**
