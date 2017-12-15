@@ -3,8 +3,8 @@ import calendar from './calendar';
 import example from './example';
 
 const rootReducer = combineReducers({
-  calendar,
-  example,
+  calendar: calendar,
+  example: example,
 });
 
 export default rootReducer;
