@@ -5,6 +5,7 @@ import moment from 'moment';
 import Page from 'components/App/Pages';
 import * as calendarActions from 'actions/calendar';
 import RoomIndicator from './RoomIndicator/index';
+import EntriesTable from "./EntriesTable/index";
 
 @connect(
   ({ calendar }) => ({
@@ -17,18 +18,10 @@ export default class Home extends React.PureComponent {
   static propTypes = {
     calendar: PropTypes.object.isRequired,
     getEntries: PropTypes.func.isRequired,
-  }
+  };
 
   componentWillMount() {
     this.props.getEntries();
-  }
-
-  renderItem = (item) => {
-    return(
-      <div key={JSON.stringify(item)} className="container">
-        { item.summary }
-      </div>
-    );
   }
 
   occupied = items => {
@@ -51,7 +44,7 @@ export default class Home extends React.PureComponent {
       <Page>
         <h3>React Redux Workshop</h3>
         <RoomIndicator isOccupied={occupied.isOccupied} item={occupied.item} />
-        {isSet && entries.map(item => this.renderItem(item)) }
+        <EntriesTable entries={entries.filter(item => item !== occupied.item)} />
       </Page>
     );
   }
