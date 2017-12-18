@@ -19,6 +19,7 @@ export default class Home extends React.PureComponent {
   static propTypes = {
     calendar: PropTypes.object.isRequired,
     getEntries: PropTypes.func.isRequired,
+      setCancelledState: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -44,7 +45,7 @@ export default class Home extends React.PureComponent {
     return (
       <Page>
         <h3>React Redux Workshop</h3>
-        <RoomIndicator isOccupied={occupied.isOccupied} item={occupied.item} />
+        <RoomIndicator isOccupied={occupied.isOccupied} item={occupied.item} setCancelledState={this.props.setCancelledState} />
         <EmptySlots occupied={occupied} entriesFiltered={entries.filter(item => item !== occupied.item)} />
         <EntriesTable entries={entries.filter(item => item !== occupied.item)} />
       </Page>

@@ -5,7 +5,7 @@ export default class CancelEvent extends React.PureComponent {
 
     render() {
         return (
-            <button>CANCEL THIS EVENT</button>
+            <button onClick={this.props.onclick}>CANCEL THIS EVENT</button>
         );
     };
 }

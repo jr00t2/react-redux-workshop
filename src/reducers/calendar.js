@@ -38,12 +38,14 @@ export default function reducer(state = defaultState, action) {
 
         case ActionTypes.SET_CANCELLED_STATE: {
             const { room, item } = action.payload;
-            const index = state.room[room].entries.indexOf(item);
+            const index = state.rooms[room].entries.indexOf(item);
             const { rooms, rooms: {[room]: { entries } } } = state;
             const newItem = {
                 ...entries[index],
-                isCancelled: !entries[index],
+                isCancelled: true,
             };
+
+            console.log('index', index, 'item', entries[index]);
             return {
                 ...state,
                 rooms: {

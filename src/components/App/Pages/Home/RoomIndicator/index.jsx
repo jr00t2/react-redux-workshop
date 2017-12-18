@@ -6,6 +6,7 @@ export default class RoomIndicator extends React.PureComponent {
   static propTypes = {
     isOccupied: PropTypes.bool,
     item: PropTypes.object,
+    setCancelledState: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -18,7 +19,7 @@ export default class RoomIndicator extends React.PureComponent {
     console.log(item);
     return (
       <div className="row">
-        <CancelEvent />
+        <CancelEvent onclick={() => {this.props.setCancelledState({item, room: 'red'})}}/>
         <div className="col-md-12">
           {isOccupied ?
             <i className="fa fa-close"></i> :
