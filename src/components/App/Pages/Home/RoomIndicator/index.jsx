@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CancelEvent from "../CancelEvent/index";
 
 export default class RoomIndicator extends React.PureComponent {
   static propTypes = {
@@ -17,6 +18,7 @@ export default class RoomIndicator extends React.PureComponent {
     console.log(item);
     return (
       <div className="row">
+        <CancelEvent />
         <div className="col-md-12">
           {isOccupied ?
             <i className="fa fa-close"></i> :

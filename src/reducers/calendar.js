@@ -21,14 +21,42 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 rooms: {
                   red: {
-                    entries: redEntries,
+                    entries: [
+                        ...state.rooms.red.entries,
+                        redEntries,
+                    ],
                   },
                   blue: {
-                    entries: blueEntries,
+                    entries: [
+                        ...state.rooms.blue.entries,
+                        blueEntries,
+                    ],
                   },
                 }
             }
         }
+
+        case ActionTypes.SET_CANCELLED_STATE: {
+            const {room, item} = action.payload;
+            const index = state.room[room].entries.indexOf(item);
+
+            return {
+                ...state,
+                rooms: {
+                    ...state.rooms,
+                    [room]: {
+                        entries: [
+                            [index]: {
+                            ...state.rooms.entries[index],
+                    isCancelled: !state.rooms.entries[index],
+            },
+                        ]
+                    }
+                }
+            }
+
+        }
+
         default:
             return state;
     }

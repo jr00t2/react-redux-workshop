@@ -8,3 +8,10 @@ export function getEntries() {
         payload: payload,
     }    
 }
+
+export function setCancelledState(payload) {
+    return {
+        type: ActionTypes.SET_CANCELLED_STATE,
+        payload: payload,
+    }
+}
