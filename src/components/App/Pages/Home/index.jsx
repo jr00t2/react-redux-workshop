@@ -6,6 +6,7 @@ import Page from 'components/App/Pages';
 import * as calendarActions from 'actions/calendar';
 import RoomIndicator from './RoomIndicator/index';
 import EntriesTable from "./EntriesTable/index";
+import EmptySlots from "./EmptySlots/index";
 
 @connect(
   ({ calendar }) => ({
@@ -39,11 +40,12 @@ export default class Home extends React.PureComponent {
   render() {
     const isSet = Object.keys(this.props.calendar).length > 0;
     const { calendar: { rooms: { red: { entries } } } } = this.props;
-    const occupied = this.occupied(entries)
+    const occupied = this.occupied(entries);
     return (
       <Page>
         <h3>React Redux Workshop</h3>
         <RoomIndicator isOccupied={occupied.isOccupied} item={occupied.item} />
+        <EmptySlots occupied={occupied} entriesFiltered={entries.filter(item => item !== occupied.item)} />
         <EntriesTable entries={entries.filter(item => item !== occupied.item)} />
       </Page>
     );
