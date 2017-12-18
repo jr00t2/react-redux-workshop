@@ -22,8 +22,23 @@ export default class Home extends React.PureComponent {
       setCancelledState: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.interval = null;
+  }
+
   componentWillMount() {
     this.props.getEntries();
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.props.getEntries();
+    }, 10000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   occupied = items => {

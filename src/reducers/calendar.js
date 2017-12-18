@@ -15,8 +15,17 @@ export default function reducer(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.GET_ENTRIES: {
             const { red, blue } = action.payload.data ? action.payload.data.calendarListEntries : defaultState.rooms;
-            const blueEntries = Object.keys(blue.entries).map((key) => (blue.entries[key]))[0];
-            const redEntries = Object.keys(red.entries).map((key) => (red.entries[key]))[0];
+            const blueEntries = Object.keys(blue.entries).map(
+                (key) => ({
+                     key: JSON.stringify(blue.entries[key]),
+                     value: blue.entries[key],
+                })
+            )[0];
+            const redEntries = Object.keys(red.entries).map(
+                (key) => ({
+                    key: JSON.stringify(red.entries[key]),
+                    value: red.entries[key]}),
+                )[0];
             return {
                 ...state,
                 rooms: {
@@ -39,22 +48,21 @@ export default function reducer(state = defaultState, action) {
         case ActionTypes.SET_CANCELLED_STATE: {
             const { room, item } = action.payload;
             const index = state.rooms[room].entries.indexOf(item);
-            const { rooms, rooms: {[room]: { entries } } } = state;
+            const { rooms, rooms: {[room]: { entries: oldEntries } } } = state;
             const newItem = {
-                ...entries[index],
+                ...oldEntries[index],
                 isCancelled: true,
             };
-
-            console.log('index', index, 'item', entries[index]);
+            const entries = [
+                ...oldEntries.slice(index + 1), //first element starts at 1... -.-*
+                newItem,
+            ];
             return {
                 ...state,
                 rooms: {
                     ...rooms,
                     [room]: {
-                        entries: [
-                            ...entries.slice(index),
-                            newItem,
-                        ],
+                        entries,
                     }
                 }
             }
