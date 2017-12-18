@@ -26,11 +26,12 @@ export default class EmptySlots extends React.PureComponent {
             message = `Nach dem Ende des aktuellen Termins ist dieser Raum für die nächsten ${this.getFreeSlot(entriesFiltered[0].timeStart, occupied.item.timeEnd)} Stunden frei.`;
         } else if (!occupied.isOccupied && entriesFiltered.length > 0) {
             message = `Dieser Raum für die nächsten ${this.getFreeSlot(entriesFiltered[0].timeStart,moment())} Stunden frei.`;
-        } else if (occupied.isOccupied && entriesFiltered.length === 0) {
+        } else if (occupied.isOccupied && !occupied.item.isCancelled && entriesFiltered.length === 0) {
             message = 'Nach dem Ende des aktuellen Termins ist dieser Raum bis auf Weiteres frei.';
-        } else if (!occupied.isOccupied && entriesFiltered.length === 0) {
+        } else if ((!occupied.isOccupied && entriesFiltered.length === 0) || occupied.item.isCancelled)  {
             message = 'Dieser Raum ist bis auf Weiteres frei.';
         }
+        console.log(occupied);
 
         return message;
     };

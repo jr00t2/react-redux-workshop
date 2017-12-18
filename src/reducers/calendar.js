@@ -1,4 +1,5 @@
 import * as ActionTypes from 'actions/types';
+import _ from 'lodash';
 
 const defaultState = {
     rooms: {
@@ -11,35 +12,47 @@ const defaultState = {
     }
 };
 
+function getItemJsonString(item) {
+    return `${item.summary}, ${item.timeStart}, ${item.timeEnd}, ${item.organizerName}`.replace(/[|&;$%@"<>()+,]/g, "");
+}
+function filterEntryIfExistsOrExistsWithIsCancelled (currentEntries, nextEntries) {
+    const mergedEntries = [
+        ...currentEntries,
+        nextEntries,
+    ];
+    const indexed = {};
+    return mergedEntries.filter((item) => {
+        const index = getItemJsonString(item);
+        if (indexed[index] && !item.hasOwnProperty('isCancelled')) {
+            return false;
+        }
+        indexed[index] = index;
+        return true;
+    });
+    
+}
+
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
         case ActionTypes.GET_ENTRIES: {
             const { red, blue } = action.payload.data ? action.payload.data.calendarListEntries : defaultState.rooms;
-            const blueEntries = Object.keys(blue.entries).map(
-                (key) => ({
-                     key: JSON.stringify(blue.entries[key]),
-                     value: blue.entries[key],
-                })
-            )[0];
-            const redEntries = Object.keys(red.entries).map(
-                (key) => ({
-                    key: JSON.stringify(red.entries[key]),
-                    value: red.entries[key]}),
-                )[0];
+            const blueEntries =
+             filterEntryIfExistsOrExistsWithIsCancelled(
+                 state.rooms.blue.entries,
+                 Object.keys(blue.entries).map((key) => (blue.entries[key]))[0],
+            );
+            const redEntries = filterEntryIfExistsOrExistsWithIsCancelled(
+                state.rooms.red.entries,
+                Object.keys(red.entries).map((key) => (red.entries[key]))[0],
+            );
             return {
                 ...state,
                 rooms: {
                     red: {
-                        entries: [
-                            ...state.rooms.red.entries,
-                            redEntries,
-                        ],
+                        entries: redEntries,
                     },
                     blue: {
-                        entries: [
-                            ...state.rooms.blue.entries,
-                            blueEntries,
-                        ],
+                        entries: blueEntries,
                     },
                 }
             }
@@ -54,7 +67,7 @@ export default function reducer(state = defaultState, action) {
                 isCancelled: true,
             };
             const entries = [
-                ...oldEntries.slice(index + 1), //first element starts at 1... -.-*
+                ...oldEntries.slice(index + 1), //first element starts at 1 ... -.-*
                 newItem,
             ];
             return {

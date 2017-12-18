@@ -16,20 +16,19 @@ export default class RoomIndicator extends React.PureComponent {
 
   render() {
     const { isOccupied, item } = this.props;
-    console.log(item);
     return (
       <div className="row">
         <CancelEvent onclick={() => {this.props.setCancelledState({item, room: 'red'})}}/>
         <div className="col-md-12">
-          {isOccupied ?
+          {isOccupied && !item.isCancelled ?
             <i className="fa fa-close"></i> :
             <i className="fa fa-check"></i>
           }
         </div>
         <div className="col-md-12">
-          <h3>{item.summary}</h3>
-          <p>{item.timeStart} - {item.timeEnd}</p>
-          <p>{item.organizerName}</p>
+          <h3 className={item.isCancelled ? 'cancelled' : ''}>{item.summary}</h3>
+          <p className={item.isCancelled ? 'cancelled' : ''}>{item.timeStart} - {item.timeEnd}</p>
+          <p className={item.isCancelled ? 'cancelled' : ''}>{item.organizerName}</p>
         </div>
       </div>
     );
